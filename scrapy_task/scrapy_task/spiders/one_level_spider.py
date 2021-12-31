@@ -2,7 +2,8 @@ import scrapy
 
 '''
 Spider that accesses the one level VC website
-Extracts site, name, first investment, and description of each company and writes them to JSON file and TXT file
+Extracts site, name, first investment, and description of each company
+Then writes them to JSON file 
 '''
 
 
