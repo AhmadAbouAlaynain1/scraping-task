@@ -24,16 +24,25 @@ class TwoLevel(scrapy.Spider):
         description = response.css(".wpb_text_column h4 i::text").getall()
         name = response.css("title::text").get().split("|")[0].strip()
         details = response.css(".row_col_wrap_12_inner.col.span_12.left")
+        # Handle changes in HTML for sectors and headquarters
+        try:
+            sectors = details.css("p::text")[0].get().strip()
+            hq = details.css("p::text")[1].get().strip()
+        except:
+            sectors = details.css("h5::text")[0].get().strip()
+            hq = details.css("h5::text")[1].get().strip()
+
+        # If description is multiple elements
         if (description):
             yield {
                 "name": name,
                 "description": description,
-                "sectors": details.css("p::text")[0].get().strip(),
-                "headquarters": details.css("p::text")[1].get().strip()
+                "sectors": sectors,
+                "headquarters": hq
             }
         yield {
             "name": name,
             "description": response.css(".wpb_text_column h4::text").get(),
-            "sectors": details.css("p::text")[0].get().strip(),
-            "headquarters": details.css("p::text")[1].get().strip()
+            "sectors": sectors,
+            "headquarters": hq
         }
